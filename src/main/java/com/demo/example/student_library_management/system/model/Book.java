@@ -1,16 +1,22 @@
 package com.demo.example.student_library_management.system.model;
 
 import com.demo.example.student_library_management.system.enums.Genre;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "book")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Book {
     @Id
     @Column
@@ -31,5 +37,21 @@ public class Book {
     private Genre genre;
 
     @Column(name="is_available",nullable = false)
-    private boolean isAvailable;
+    private boolean available;
+
+
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn
+    private Author author;
+
+    @JsonBackReference
+    @ManyToOne
+    @JoinColumn
+    private Card card;
+
+    @JsonBackReference
+    @OneToMany(mappedBy = "book" ,cascade=CascadeType.ALL)
+    private List<Transaction> transactionList=new ArrayList<>();
 }

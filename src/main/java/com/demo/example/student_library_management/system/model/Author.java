@@ -1,16 +1,22 @@
 package com.demo.example.student_library_management.system.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "author")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Author {
 
     @Id
@@ -29,5 +35,12 @@ public class Author {
 
     @Column(nullable = false)
     private double rating;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL)
+    private List<Book>  bookMyAuthor=new ArrayList<>();
+
+
+
 
 }
