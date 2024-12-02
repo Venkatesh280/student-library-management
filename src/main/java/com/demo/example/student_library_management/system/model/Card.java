@@ -2,8 +2,6 @@ package com.demo.example.student_library_management.system.model;
 
 
 import com.demo.example.student_library_management.system.enums.CardStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,16 +41,13 @@ public class Card {
     @UpdateTimestamp // it automatically updates date and time when card is updated
     private  Date updateDate;
 
-    @JsonBackReference //when have join coulmn used backed refernce
     @OneToOne
     @JoinColumn // its joins the primary key of student table as foreign key in card table
     private Student student;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "card" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "card")
     private List<Book> bookIssuedToCard=new ArrayList<>();
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "card" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "card")
     private List<Transaction> transactionForCard=new ArrayList<>();
 }

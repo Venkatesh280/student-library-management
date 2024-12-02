@@ -10,7 +10,7 @@ public class BookRequestDto {
     private int pages;
     private String publisherName;
     private Genre genre;
-    private boolean available;
+    private boolean isAvailable;
     private int authorId;
-    private int cardId;
+    private int bookId;
 }

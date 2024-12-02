@@ -1,13 +1,12 @@
 package com.demo.example.student_library_management.system.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import com.demo.example.student_library_management.system.enums.TransactionStatus;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import java.util.Date;
 
@@ -37,17 +36,15 @@ public class Transaction {
     private double fine;
 
     @Column(name="is_issue_or_return",nullable = false)
-    private boolean issueOrReturn;
+    private boolean isIssueOrReturn;
 
     @Column(name="due_date")
     private String dueDate;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn
     private Card card;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn
     private Book book;

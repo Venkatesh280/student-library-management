@@ -1,7 +1,6 @@
 package com.demo.example.student_library_management.system.model;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,7 +38,6 @@ public class Student {
     @Column(nullable = false)
     private String sem;
 
-    @JsonManagedReference    // where are mapped by used managed refernce
     @OneToOne(mappedBy = "student", cascade = CascadeType.ALL)//when create in student data automatically in card table do this operations in cascadetype any modifys in student table automatically update in card taable
     private Card card;
 
