@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/Book/api")
 public class BookController {
+
 
     @Autowired
     private BookService bookService;
 
     @PostMapping("/save")
-    public String saveBook(@RequestBody BookRequestDto bookRequestDto) {
-        String response= bookService.addBook(bookRequestDto);
+    public String saveBook(@RequestBody BookRequestDto bookRequestDto){
+        String response = bookService.addBook(bookRequestDto);
         return response;
     }
 }

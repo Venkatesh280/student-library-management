@@ -10,13 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthorService {
-
     @Autowired
     private AuthorRepository authorRepository;
 
-    public String addAuthor(AuthorRequestDto authorRequestDto) {
-      Author author= AuthorConverts.convertAuthorRequestDtoIntoAuthor(authorRequestDto);
-      authorRepository.save(author);
-      return "Author saved successfully";
+    public String addAuthor(AuthorRequestDto authorRequestDto){
+        Author author = AuthorConverts.convertAuthorRequestDtoIntoAuthor(authorRequestDto);
+        authorRepository.save(author);
+        return "Author Saved Successfully";
     }
 }

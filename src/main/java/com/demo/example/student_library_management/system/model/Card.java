@@ -43,16 +43,16 @@ public class Card {
     @UpdateTimestamp // it automatically updates date and time when card is updated
     private  Date updateDate;
 
-    @JsonBackReference //when have join coulmn used backed refernce
+    @JsonBackReference
     @OneToOne
     @JoinColumn // its joins the primary key of student table as foreign key in card table
     private Student student;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "card" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "card",cascade=CascadeType.ALL)
     private List<Book> bookIssuedToCard=new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "card" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "card",cascade=CascadeType.ALL)
     private List<Transaction> transactionForCard=new ArrayList<>();
 }

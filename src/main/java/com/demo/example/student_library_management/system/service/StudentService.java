@@ -18,8 +18,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-import static org.antlr.v4.runtime.tree.xpath.XPath.findAll;
-
 @Service
 public class StudentService {
 
@@ -28,115 +26,112 @@ public class StudentService {
 
     Logger logger = LoggerFactory.getLogger(StudentService.class);
 
-    public String addStudent(StudentRequestDto studentRequestDto) {
-        logger.info("addStudent");
-       Student student= StudentConvertor.convertStudentRequestdtoIntoStudent(studentRequestDto);
-       if(student==null){
-           logger.error("student is null");
-           throw new RuntimeException();
-       }
+    public String addStudent(StudentRequestDto studentRequestDto){
+        logger.info("addStudent method started");
+        Student student = StudentConvertor.convertStudentRequestdtoIntoStudent(studentRequestDto);
+        if(student==null){
+            logger.error("Error in addStudent method");
+            throw new RuntimeException();
+        }
 
-
-       // whenever  the student gets added card also issued the student
+        //whenever the student gets added card also issued to that student
         Card card = new Card();
         card.setCardStatus(CardStatus.ACTIVE);
         card.setStudent(student);
 
         student.setCard(card);
 
-       studentRepository.save(student);
-       logger.info("student saved");
-       return "Student saved successfully";
+        studentRepository.save(student);
+        logger.info("addStudent method ended");
+        return "Student and card Saved Successfully";
     }
 
-    public Student getStudentById(int studentId) {
-        logger.info("getStudentById");
-        Optional<Student> studentOptinal= studentRepository.findById(studentId);
-        if(!studentOptinal.isPresent()){
-            logger.error("student not found");
-            throw new RuntimeException();
+    public Student getStudentById(int studentId){
+        logger.info("getStudentById method started");
+        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        if(!studentOptional.isPresent()){
+            logger.error("Error in getStudentById method");
+            throw new RuntimeException("Student not found");
         }
-        Student student=studentOptinal.get();
-        logger.info("student found");
+        Student student = studentOptional.get();
+        logger.info("getStudentById method ended");
         return student;
     }
 
-    public List<Student> getAllStudents() {
-      List<Student> studentList= studentRepository.findAll();
-      return studentList;
+    public List<Student> getAllStudents(){
+        List<Student> studentList = studentRepository.findAll();
+        return studentList;
     }
 
     /*
+    pagination - fetching the data or records in the form of pages
+    pagenumber - the number of page we want to see (page number starts from 0,1,2,3...)
+    pagesize - total number of records or data in each page (it is fixed for each page)
 
-    pagination-feteching the data or records in the form of pages
-    pagenumber-the number of pages we want to see(page number starts from 0,1,2,3...)
-    pageSize-total number of records or data in each page(it is fixed for each page)
+    database total records/data - 28, page size -5
+    0th page - 1-5
+    1st page - 6-10
+    2nd page - 11-15
+    3rd page - 16-20
+    4th page - 21-25
+    5th page - 26-28
 
-    databsae total records/data-28, page size-5
-    0th page -> 1-5
-    1 st page->6-10
-    2 nd page->11-15
-    3 rd page-> 16-20
-    4 th page->21-25
-    5 th page->26-28
-
-    database total records -11 , pagesize-2
-    0th page->1-2
-    1st page->3-4
-    2nd page->5-6
-    3rd page->7-8
-    4th page->9-10
-    5th page->11
-
-    sorting -arrange the data or records in ascending or descending order
+    database total records - 11, pagesize-2
+    0th page - 1-2
+    1st page - 3-4
+    2nd page - 5-6
+    3rd page - 7-8
+    4th page - 9-10
+    5th page - 11
+    sorting - arranging the data or records in ascending or descending order
      */
 
-    public List<Student> getStudentsBasedOnPage(int page,int size,String sortInput) {
+    public List<Student> getStudentsBasedOnPage(int pageNo, int pageSize, String sortInput){
 
-        //only pagination-page<Student> studentPage=studentRepositry.findAll(PageRequest.of(pageNo,pageSize));
-        //pagination and sorting together
-        Page<Student> studentPage=studentRepository.findAll(PageRequest.of(page,size, Sort.by(sortInput).ascending()));
-      // we cannot send page as ouptu so we need to convert is to list
-        List<Student> studentList= studentPage.getContent();
+        // only pagination - Page<Student> studentPage = studentRepository.findAll(PageRequest.of(pageNo,pageSize));
+        // pagination and sorting together
+        Page<Student> studentPage = studentRepository.findAll(PageRequest.of(pageNo,pageSize, Sort.by(sortInput).ascending()));
+        // we cannot send page as output so we need to convert it to list
+        List<Student> studentList = studentPage.getContent();
         return studentList;
-
     }
 
-    public long countStudents() {
-       long count= studentRepository.count();
-       return count;
+    public long countStudents(){
+        long count = studentRepository.count();
+        return count;
     }
 
-    public String deleteStudentById(int studentId) {
+    public String deleteStudentById(int studentId){
         studentRepository.deleteById(studentId);
         return "student deleted";
     }
 
-    public String updateStudent(int studentId,StudentRequestDto newStudentRequestDto) {
-        // first take students id and find student details
+    public String updateStudent(int studentId, StudentRequestDto newStudentRequestDto){
+        // first take studentId and find student details
         // if student present update it
         // else no need
-        Student student= getStudentById(studentId);
+        Student student = getStudentById(studentId);
         if(student!=null){
-           student.setName(newStudentRequestDto.getName());
-           student.setGender(newStudentRequestDto.getGender());
-           student.setSem(newStudentRequestDto.getSem());
-           student.setDob(newStudentRequestDto.getDob());
-           student.setEmail(newStudentRequestDto.getEmail());
-           student.setDepartment(newStudentRequestDto.getDepartment());
-           studentRepository.save(student);
-           return "Student updated successfully";
-        }else{
-            return "cannot find student to updated";
+            student.setName(newStudentRequestDto.getName());
+            student.setGender(newStudentRequestDto.getGender());
+            student.setSem(newStudentRequestDto.getSem());
+            student.setDob(newStudentRequestDto.getDob());
+            student.setEmail(newStudentRequestDto.getEmail());
+            student.setDepartment(newStudentRequestDto.getDepartment());
+            studentRepository.save(student);
+            return "student updated successfully";
+        } else {
+            return "Cannot find student to update";
         }
     }
 
-    public List<Student> getStudentByDepartment(String department) {
-        List<Student> studentList= studentRepository.findByDepartment(department);
+    public List<Student> getStudentByDepartment(String department){
+        List<Student> studentList = studentRepository.findByDepartment(department);
         return studentList;
     }
-    public List<Student> getStudentBySem(String sem) {
-        List<Student> studentList= studentRepository.getStudentBySem(sem);
+
+    public List<Student> getStudentBySem(String sem){
+        List<Student> studentList = studentRepository.getStudentBySem(sem);
         return studentList;
     }
 }

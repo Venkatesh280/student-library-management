@@ -9,10 +9,9 @@ import java.util.List;
 
 @Repository
 public interface StudentRepository extends JpaRepository<Student,Integer> {
+    // customized queries - our own user defined queries
 
-    //customized queries-our own user defined queries
-
-    //1.writing own methods with fields or attributes with JPA support
+    // 1.writing own methods with fields or attributes with JPA support
     public Student findByEmail(String email);
 
     public List<Student> findBySem(String sem);
@@ -21,11 +20,10 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
 
     public List<Student> findBySemAndDepartment(String sem, String department);
 
-    public List<Student> findByDepartmentOrSem(String department, String sem);
+    public List<Student> findBySemOrDepartment(String sem, String department);
 
-    //2.writing our own complete query without jpa support(to write query)
+    // 2.writing our own complete query without JPA support(to write query)
 
-    @Query(nativeQuery= true,value="SELECT * FROM student WHERE sem= :inputSem;")
+    @Query(nativeQuery = true, value = "SELECT * FROM student where sem= :inputSem;")
     public List<Student> getStudentBySem(String inputSem);
-
 }

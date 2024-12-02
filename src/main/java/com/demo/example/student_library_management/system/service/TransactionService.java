@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TransactionService {
-
     @Autowired
     private TransactionRepository transactionRepository;
 
@@ -24,17 +23,16 @@ public class TransactionService {
     @Autowired
     private BookRepository bookRepository;
 
-    public String addTransaction(TransactionRequestDto transactionRequestDto) {
+    public String addTransaction(TransactionRequestDto transactionRequestDto){
         Transaction transaction = TransactionConvertor.convertTransactionRequestDtoIntoTransaction(transactionRequestDto);
 
-        Card card=cardRepository.findById(transactionRequestDto.getCardId()).get();
+        Card card = cardRepository.findById(transactionRequestDto.getCardId()).get();
         transaction.setCard(card);
-        //  System.out.println(card.getCardDate());
 
-        Book book= bookRepository.findById(transactionRequestDto.getBookId()).get();
+        Book book = bookRepository.findById(transactionRequestDto.getBookId()).get();
         transaction.setBook(book);
-         // System.out.println(book.getId());
+
         transactionRepository.save(transaction);
-        return "transaction added successfully";
+        return "Transaction added successfully";
     }
 }

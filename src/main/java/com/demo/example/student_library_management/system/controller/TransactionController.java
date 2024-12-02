@@ -12,15 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/transaction/api")
 public class TransactionController {
-
-
     @Autowired
-    private TransactionService transactionService;
+    private TransactionService transactionServcie;
 
     @PostMapping("/save")
-    public String saveTransaction(@RequestBody TransactionRequestDto transactionRequestDto) {
-
-        String response=transactionService.addTransaction(transactionRequestDto);
+    public String saveTransaction(@RequestBody TransactionRequestDto transactionRequestDto){
+        String response = transactionServcie.addTransaction(transactionRequestDto);
         return response;
     }
 }
+

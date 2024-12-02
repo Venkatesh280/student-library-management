@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BookService {
-
-
     @Autowired
     private BookRepository bookRepository;
 
@@ -24,20 +22,18 @@ public class BookService {
     @Autowired
     private AuthorRepository authorRepository;
 
+    public String addBook(BookRequestDto bookRequestDto){
 
-    public String addBook(BookRequestDto bookRequestDto) {
-        Book book= BookConverts.convertBookRequestDtoIntoBook(bookRequestDto);
+        Book book = BookConverts.convertBookRequestDtoIntoBook(bookRequestDto);
 
         // from authorId get whole author details
-         Author author= authorRepository.findById(bookRequestDto.getAuthorId()).get();
-         book.setAuthor(author);
+        Author author = authorRepository.findById(bookRequestDto.getAuthorId()).get();
+        book.setAuthor(author);
         // from cardId get whole card details
-        System.out.println(author.getName());
-          Card card= cardRepository.findById(bookRequestDto.getCardId()).get();
-           book.setCard(card);
-            System.out.println(card.getCardDate());
-           bookRepository.save(book);
-           return"Book saved into database";
+        Card card = cardRepository.findById(bookRequestDto.getCardId()).get();
+        book.setCard(card);
+
+        bookRepository.save(book);
+        return "Book Saved into database";
     }
 }
-
